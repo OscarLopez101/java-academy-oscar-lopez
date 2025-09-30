@@ -34,7 +34,7 @@ public class Ex5 {
         String ShippingZipcode = scanner.nextLine();
 
         String cityStateZip = billingCity + ", " + billingSt + " " + billingZipcode;
-        String ShippingcityStateZip = shippingCity + ", " + shippingSt + " " + ShippingZipcode;
+        String ShippingcityStateZip = shippingCity + ", " + shippingState + " " + ShippingZipcode;
 
         StringBuilder sb = new StringBuilder();
 
@@ -51,7 +51,6 @@ public class Ex5 {
 
         System.out.println("\n");
         System.out.println(sb.toString());
-
 
 
 
