@@ -1,24 +1,31 @@
 package com.pluralsight;
 
 import java.io.*;
-import java.net.URL;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        // Load the CSV file from resources
-        URL resource = Main.class.getClassLoader().getResource("employees.csv");
+        Scanner scanner = new Scanner(System.in);
 
-        if (resource == null) {
-            System.out.println("File not found!");
-            return;
-        }
+        // Prompt for input and output file names
+        System.out.print("Enter the name of the employee file to process: ");
+        String inputFileName = scanner.nextLine();
 
-        File file = new File(resource.getFile());
+        System.out.print("Enter the name of the payroll file to create: ");
+        String outputFileName = scanner.nextLine();
 
-        try (BufferedReader bufReader = new BufferedReader(new FileReader(file))) {
+        // Try-with-resources for both reader and writer
+        try (
+                BufferedReader bufReader = new BufferedReader(new FileReader(inputFileName));
+                PrintWriter writer = new PrintWriter(new FileWriter(outputFileName))
+        ) {
             String line;
 
+            // Write header line to the payroll file
+            writer.println("id|name|gross pay");
+
+            // Read each line from the employee file
             while ((line = bufReader.readLine()) != null) {
                 String[] tokens = line.split("\\|");
 
@@ -29,11 +36,21 @@ public class Main {
 
                 Employee emp = new Employee(employeeId, name, hoursWorked, payRate);
 
-                System.out.printf("ID: %d | Name: %-20s | Gross Pay: $%.2f%n",
+                // Write employee payroll info to output file
+                writer.printf("%d|%s|%.2f%n",
                         emp.getEmployeeId(), emp.getName(), emp.getGrossPay());
             }
 
+            System.out.println("Payroll report written to: " + outputFileName);
+
+        } catch (IOException e) {
+            System.out.println("Error processing files: " + e.getMessage());
         }
     }
 }
+
+
+
+
+
 
